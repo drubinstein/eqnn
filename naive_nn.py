@@ -6,7 +6,6 @@ class NaiveNN:
     #learning_rate is the forgetting factor
     #delta is the initial value for P(0)
     def __init__(self, n_weights = 5, learning_rate = .1):
-        tf.logging.set_verbosity(tf.logging.ERROR)
         self.n_weights = n_weights
         self.learning_rate = learning_rate
         self.X = tf.placeholder(tf.float32, [self.n_weights,1])
@@ -17,7 +16,7 @@ class NaiveNN:
         self.pred = self.mlp(self.X, self.weights)
         self.cost = tf.pow(tf.abs(self.pred-self.Y),2)
         self.optimizer = tf.train.GradientDescentOptimizer(self.learning_rate).minimize(self.cost)
-        self.init = tf.initialize_all_variables()
+        self.init = tf.global_variables_initializer()
         self.sess = tf.Session()
 
         self.sess.run(self.init)
@@ -41,8 +40,7 @@ class NaiveNN:
         for n in range(0,x.shape[0]-self.n_weights):
             x_n = x[n:n+self.n_weights,...]
             y[n] = self.sess.run(self.pred, feed_dict={self.X: x_n})
-
-        return y
+        return np.round(y)
 
     def get_taps(self):
         return self.weights
