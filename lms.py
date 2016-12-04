@@ -6,7 +6,7 @@ class Lms:
     #mu is the step size
     def __init__(self,order=5, mu=.2):
         self.order = order
-        self.h = np.zeros((self.order,1),dtype=complex)
+        self.h = np.zeros((self.order,1),dtype=np.float32)
         self.mu = mu
 
     def train(self, x, desired, return_err = False):
@@ -42,3 +42,4 @@ class Lms:
 
     def set_order(self, order : int):
         self.order = order
+        self.reset_taps()
